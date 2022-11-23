@@ -1,0 +1,16 @@
+name: pdsim
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - numpy
+  - scipy
+  - matplotlib
+  - pyyaml
+  - h5py
+  - wxpython
+  - pip
+  - pip:
+    - CoolProp
+    - Cython
+    - quantities

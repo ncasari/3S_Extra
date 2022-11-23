@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: PDSim
+Version: 2.14
+Summary: A flexible open-source framework for the quasi-steady-state simulation of positive displacement machines including compressors and expanders
+Home-page: http://pdsim.sourceforge.net
+Author: Ian Bell
+Author-email: ian.h.bell@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Requires: quantities
+License-File: LICENSE
+
+UNKNOWN
+

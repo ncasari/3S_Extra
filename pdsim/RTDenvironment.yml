@@ -1,0 +1,17 @@
+name: pdsim_doc_build
+dependencies:
+  - python=3.7
+  - numpy
+  - scipy
+  - matplotlib
+  - IPython
+  - cython
+  - pyyaml
+  - h5py
+  - nbconvert
+  - pip
+  - wxpython
+  - pip:
+    - CoolProp
+    - glob2
+    - ipython_genutils
