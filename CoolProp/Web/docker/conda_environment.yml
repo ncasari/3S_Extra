@@ -1,0 +1,21 @@
+name: docs
+dependencies:
+  - python=3.6
+  - scipy
+  - numpy
+  - matplotlib
+  - ipython
+  - pandas
+  - pip
+  - six
+  - requests
+  - jinja2
+  - pyyaml
+  - pip:
+    - cython
+    - sphinx
+    - sphinxcontrib-napoleon
+    - sphinxcontrib-doxylink
+    - sphinxcontrib-bibtex
+    - cloud_sptheme
+    - openpyxl
