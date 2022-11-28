@@ -271,8 +271,6 @@ cpdef IsothermalWallTube(mdot,State1,State2,fixed,L,ID,OD=None,HTModel='Twall',T
 
             DELTAT=0.1
             T2 = T2_star
-            print("h2")
-            print(h2)
 
             while ( abs(State2.h - h2) > 1e-1):
                 State2.update(dict(T=T2, P=p+DELTAP/1000))
