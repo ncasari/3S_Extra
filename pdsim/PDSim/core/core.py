@@ -461,15 +461,11 @@ class PDSimCore(object):
         implement a different guess method
         """
 
-        print("CORE SOLVER CALLED ")
-        print(inlet_state.Fluid)
         h1 = inlet_state.h
         p1 = inlet_state.p
         s1 = inlet_state.s
         T1 = inlet_state.T
         outlet_state = inlet_state.copy()
-        out_state = CP.AbstractState('HEOS',inlet_state.Fluid)
-        out_state.update(CP.PT_INPUTS,p1,T1)
 
         def objective(T):
             outlet_state.update(dict(P=p_outlet, T=T))
@@ -478,7 +474,6 @@ class PDSimCore(object):
 
         # Solve for isentropic temperature
         T2s = scipy.optimize.newton(objective, T1)
-        print(T2s)
         # Use isentropic temp to get h2s
         outlet_state.update(dict(P=p_outlet, T=T2s))
         s2 = outlet_state.s
