@@ -941,16 +941,6 @@ class Scroll(PDSimCore, _Scroll):
                 rho2 = rho1 * V1 / V2
                 T2  = T1 * pow(V1 / V2,gamma-1)
                 p2 = p1 * pow(V1 / V2, gamma)
-                print("p1")
-                print(p1*1000)
-                print("p2")
-                print(p2 * 1000)
-                print("rho2")
-                print(rho2)
-                print("T1")
-                print(T1 )
-                print("T2")
-                print(T2 )
 
                 initState= State.State(inletState.Fluid,dict(T=T2,P=p2))
 
