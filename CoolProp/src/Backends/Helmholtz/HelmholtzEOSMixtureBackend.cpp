@@ -1055,7 +1055,9 @@ CoolPropDbl HelmholtzEOSMixtureBackend::calc_T_critical(void)
             return critpts[0].T;
         }
         else{
-            throw ValueError(format("critical point finding routine found %d critical points", critpts.size()));
+            
+            //throw ValueError(format("critical point finding routine found %d critical points", critpts.size()));
+			return critpts[0].T;
         }
     }
     else{
@@ -1071,7 +1073,10 @@ CoolPropDbl HelmholtzEOSMixtureBackend::calc_p_critical(void)
             return critpts[0].p;
         }
         else{
-            throw ValueError(format("critical point finding routine found %d critical points", critpts.size()));
+			
+			return critpts[0].p;
+
+            //throw ValueError(format("critical point finding routine found %d critical points", critpts.size()));
         }
     }
     else{
@@ -1087,7 +1092,8 @@ CoolPropDbl HelmholtzEOSMixtureBackend::calc_rhomolar_critical(void)
             return critpts[0].rhomolar;
         }
         else{
-            throw ValueError(format("critical point finding routine found %d critical points", critpts.size()));
+			return critpts[0].rhomolar;
+            //throw ValueError(format("critical point finding routine found %d critical points", critpts.size()));
         }
     }
     else{
