@@ -1248,12 +1248,16 @@ class DanfossScroll(Scroll):
         pdsim_version = modules["PDSim"].__version__
         danfosspdsim_version = modules["DanfossPDSim"].__version__ +"_"+ modules["DanfossPDSim"].__git_branch__ +"_"+ modules["DanfossPDSim"].__git_revision__
         coolprop_version = modules["CoolProp"].__version__
+		
+        
         # Operating conditions
-        inlet_state_Post = self.sim.inlet_state.copy()
-        outlet_state_Post = self.sim.outlet_state.copy()
-            
+        inlet_state_Post = self.inlet_state.copy()
+        outlet_state_Post = self.outlet_state.copy()
+
         inlet_state_Post.update(dict(P=inlet_state_Post.p, Q=1))
-        outlet_state_Post.update(dict(P=outlet_state_Post.p, Q=1))									  
+        outlet_state_Post.update(dict(P=outlet_state_Post.p, Q=1))
+
+        
         s = textwrap.dedent(
              """
                 User{sep} {username}
@@ -1278,15 +1282,17 @@ class DanfossScroll(Scroll):
                            danfosspdsim_version = danfosspdsim_version,
                            pdsim_version = pdsim_version,
                            coolprop_version = coolprop_version,
-                           refrigerant = self.inlet_state.Fluid.decode('utf-8'),
+						   refrigerant = self.inlet_state.Fluid.decode('utf-8'),
                            Pevap = self.inlet_state.p*1e-2,
                            Pcond = self.outlet_state.p*1e-2,
                            Tevap = inlet_state_Post.T - 273.15,
                            Tcond = outlet_state_Post.T - 273.15,
-                           gamma = (self.summary.polytropic_coeff1 + self.summary.polytropic_coeff2)/2,
-                           SH = self.inlet_state.T - self.inlet_state_Post.T,
+                           gamma =  (self.summary.polytropic_coeff1 + self.summary.polytropic_coeff2)/2,
+                           SH = self.inlet_state.T - inlet_state_Post.T,
                            mu_oil = self.mech.mu_oil*1e3,
-                           rpm = self.omega*60/(2*pi))).lstrip()
+                           rpm = self.omega*60/(2*pi)
+						   )).lstrip()
+        
 
         phif0 = (self.geo.phi_fi0+self.geo.phi_fo0)/2
         s += textwrap.dedent(
@@ -1305,7 +1311,6 @@ class DanfossScroll(Scroll):
                            U1 = self.geo.phi_fos-phif0,
                            U3 = self.geo.phi_fis-phif0,
                            U6 = self.geo.phi_fie-phif0))
-
         phio0 = (self.geo.phi_oi0+self.geo.phi_oo0)/2
         s += textwrap.dedent(
                 """
@@ -1327,7 +1332,7 @@ class DanfossScroll(Scroll):
                            U6 = self.geo.phi_oie-phio0,
                            mass = self.mech.orbiting_scroll_mass,
                            Fios = self.forces.inertial*1e3))
-
+        
         vector_labels = [{'Crankshaft angle':'deg'},
                          {'Fr':'N'},
                          {'Ft':'N'},
@@ -1351,7 +1356,6 @@ class DanfossScroll(Scroll):
                 """.format(vec_labels=sep.join([list(label.keys())[0] for label in vector_labels]),
                            vec_units=sep.join([list(label.values())[0] for label in vector_labels]))
                             )
-
         m = np.zeros([361,11+self.CVs.N])
         t_ = np.linspace(0.,2*pi,361)
         # Interpolation of vectors on t_
@@ -1366,7 +1370,10 @@ class DanfossScroll(Scroll):
         Aumb_ = np.interp(t_, self.forces.THETA[0]-self.forces.THETA,self.forces.Aumb)
         Almb_ = np.interp(t_, self.forces.THETA[0]-self.forces.THETA,self.forces.Almb)
         p_ = np.zeros([361,self.CVs.N])
+		
+		
         for k in range(self.CVs.N):
+            
             p_[:,k] = np.interp(t_, self.forces.THETA[0]-self.forces.THETA,self.p[k,:])*1e-3
         p_[np.isnan(p_)] = 0
 
@@ -1383,6 +1390,7 @@ class DanfossScroll(Scroll):
         m[:,10]= Almb_
         m[:,11:] = p_
 
+        
         with open(fName, 'w') as f:
             f.write(s)
             np.savetxt(f,m,delimiter='; ')
